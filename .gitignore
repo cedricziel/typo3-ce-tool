@@ -1,3 +1,4 @@
 /vendor/
 box.phar
 /*.phar
+/.t3cetool.yml
