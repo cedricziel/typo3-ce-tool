@@ -1,0 +1,19 @@
+{
+  "name": "cedricziel/typo3-cegenerator",
+  "description": "Generator and Maintenance tool for TYPO3 extensions and Content Elements",
+  "require": {
+    "symfony/console": "^3.0"
+  },
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "CedricZiel\\T3CETool\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Cedric Ziel",
+      "email": "cedric@cedric-ziel.com"
+    }
+  ]
+}

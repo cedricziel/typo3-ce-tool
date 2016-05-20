@@ -1,0 +1,39 @@
+{
+  "alias": "t3cetool.phar",
+  "chmod": "0755",
+  "compactors": [
+    "Herrera\\Box\\Compactor\\Json",
+    "Herrera\\Box\\Compactor\\Php"
+  ],
+  "directories": [
+    "app",
+    "src"
+  ],
+  "extract": true,
+  "files": [
+  ],
+  "finder": [
+    {
+      "name": "*.php",
+      "exclude": [
+        "File",
+        "mikey179",
+        "Net",
+        "phpunit",
+        "phpunit-test-case",
+        "Tester",
+        "Tests",
+        "tests",
+        "yaml"
+      ],
+      "in": "src/vendors"
+    }
+  ],
+  "git-commit": "git-commit",
+  "git-version": "git-version",
+  "main": "app/console",
+  "output": "t3cetool-@git-version@.phar",
+  "replacements": {
+  },
+  "stub": true
+}
