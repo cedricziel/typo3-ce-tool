@@ -19,5 +19,8 @@
       "name": "Cedric Ziel",
       "email": "cedric@cedric-ziel.com"
     }
-  ]
+  ],
+  "require-dev": {
+    "phpunit/phpunit": "^5.4"
+  }
 }
