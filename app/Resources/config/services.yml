@@ -2,25 +2,48 @@ parameters:
     app.name: TYPO3 CE Tool
     app.version: 1.0.0-dev
 services:
-    service_container:
-        synthetic: true
-    event_dispatcher:
-        class: Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher
-        arguments: ['@service_container']
+    # Core
     application:
         class: CedricZiel\T3CETool\CeToolApplication
         arguments: ['%app.name%', '%app.version%']
         calls:
             - ['setDispatcher', ['@event_dispatcher']]
             - ['setContainer', ['@service_container']]
+    event_dispatcher:
+        class: Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher
+        arguments: ['@service_container']
+    service_container:
+        synthetic: true
+
+    # Serialization
+    serializer:
+        class: Symfony\Component\Serializer\Serializer
+        arguments:
+            - ['@serializer.normalizers.object']
+            - ['@serializer.encoders.xml', '@serializer.encoders.yaml', '@serializer.encoders.json']
+    serializer.encoders.json:
+        class: Symfony\Component\Serializer\Encoder\JsonEncoder
+    serializer.encoders.yaml:
+        class: CedricZiel\T3CETool\Serialization\YamlEncoder
+    serializer.encoders.xml:
+        class: Symfony\Component\Serializer\Encoder\XmlEncoder
+    serializer.normalizers.object:
+        class: Symfony\Component\Serializer\Normalizer\ObjectNormalizer
+        arguments: ['@?', '@serializer.converter.camel_to_snake']
+    serializer.converter.camel_to_snake:
+        class: Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter
 
     app.initialization.initialization_service:
         class: CedricZiel\T3CETool\Initialization\InitializationService
 
+    app.configuration.configuration_manager:
+        class: CedricZiel\T3CETool\Configuration\ConfigurationManager
+        arguments: ['@serializer']
+
     # Commands
     app.command.init:
         class: CedricZiel\T3CETool\Command\InitCommand
-        arguments: ['@app.initialization.initialization_service']
+        arguments: ['@app.configuration.configuration_manager', '@app.initialization.initialization_service']
         tags:
             - { name: 'console.command' }
     app.command.element.add:

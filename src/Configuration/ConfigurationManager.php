@@ -3,12 +3,28 @@
 namespace CedricZiel\T3CETool\Configuration;
 
 use CedricZiel\T3CETool\Domain\Project;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @package CedricZiel\T3CETool\Configuration
  */
 class ConfigurationManager implements ConfigurationManagerInterface
 {
+    const CONTROL_FILENAME = 't3cetool.yml';
+
+    /**
+     * @var SerializerInterface
+     */
+    private $serializer;
+
+    /**
+     * @param SerializerInterface $serializer
+     */
+    public function __construct(SerializerInterface $serializer)
+    {
+        $this->serializer = $serializer;
+    }
+
     /**
      * Clears the current configuration
      */
@@ -24,7 +40,7 @@ class ConfigurationManager implements ConfigurationManagerInterface
      */
     public function get() : Project
     {
-        // TODO: Implement get() method.
+        return $this->read();
     }
 
     /**
@@ -35,7 +51,12 @@ class ConfigurationManager implements ConfigurationManagerInterface
      */
     public function read() : Project
     {
-        // TODO: Implement read() method.
+        $content = file_get_contents(getcwd().'/.t3cetool.yml');
+        if ($content === false) {
+            throw new ConfigurationUnavailableException('Could not open configuration file');
+        }
+
+        return $this->serializer->deserialize($content, Project::class, 'yaml');
     }
 
     /**
@@ -45,6 +66,6 @@ class ConfigurationManager implements ConfigurationManagerInterface
      */
     public function write(Project $project)
     {
-        // TODO: Implement write() method.
+        file_put_contents(getcwd().'/.'.static::CONTROL_FILENAME, $this->serializer->serialize($project, 'yaml'));
     }
 }

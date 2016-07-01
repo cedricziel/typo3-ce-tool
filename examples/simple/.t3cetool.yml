@@ -1,1 +1,10 @@
-name: trest
+title: test
+namespace: Simple
+category: null
+author: null
+author_email: null
+state: null
+dependencies: {  }
+vendor: CedricZiel
+extension_key: ghostbusters
+version_constraint: null

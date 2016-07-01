@@ -2,6 +2,8 @@
 
 namespace CedricZiel\T3CETool\Command;
 
+use CedricZiel\T3CETool\Configuration\ConfigurationManagerInterface;
+use CedricZiel\T3CETool\Domain\Project;
 use CedricZiel\T3CETool\Initialization\InitializationServiceInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
@@ -24,13 +26,23 @@ class InitCommand extends Command
     protected $initializationService;
 
     /**
+     * @var ConfigurationManagerInterface
+     */
+    private $configurationManager;
+
+    /**
+     * @param ConfigurationManagerInterface  $configurationManager
      * @param InitializationServiceInterface $initializationService
      * @param string                         $name
      */
-    public function __construct(InitializationServiceInterface $initializationService, $name = null)
-    {
+    public function __construct(
+        ConfigurationManagerInterface $configurationManager,
+        InitializationServiceInterface $initializationService,
+        $name = null
+    ) {
         parent::__construct($name);
 
+        $this->configurationManager = $configurationManager;
         $this->initializationService = $initializationService;
     }
 
@@ -59,17 +71,60 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        // Try to read existing configuration or create a new one
+        try {
+            $project = $this->configurationManager->get();
+        } catch (\TypeError $e) {
+            $project = new Project();
+        }
+
         /** @var QuestionHelper $interview */
         $interview = $this->getHelper('question');
-        $question = new Question('<info>What is the name of your project?</info>'.PHP_EOL, getcwd());
 
-        $name = $interview->ask($input, $output, $question);
+        $output->writeln('<info>Please provide the following information:</info>');
 
-        $config = ['name' => $name];
-        $content = Yaml::dump($config);
+        $defaultTitle = $project->getTitle() ?? basename(getcwd());
+        $projectTitleQuestion = new Question(
+            "<question>Title of the project / the extension (not the extension key):</question> <info>{$project->getTitle()}</info>".PHP_EOL,
+            $defaultTitle
+        );
+
+        $projectTitle = $interview->ask($input, $output, $projectTitleQuestion);
+        $project->setTitle($projectTitle);
+
+        $defaultExtensionKeyAnswer = $project->getExtensionKey() ?? basename(getcwd());
+        $extensionKeyQuestion = new Question(
+            "<question>What is the extension key of your project?</question> <info>{$project->getExtensionKey()}</info>".PHP_EOL,
+            $defaultExtensionKeyAnswer
+        );
+
+        $name = $interview->ask($input, $output, $extensionKeyQuestion);
+        $project->setExtensionKey($name);
+
+        $defaultVendor = $project->getVendor() ?? ucfirst($project->getTitle()).'\\';
+        $namespaceQuestion = new Question(
+            "<question>Vendor name for your project?</question> <info>{$project->getVendor()}</info>".PHP_EOL,
+            $defaultVendor
+        );
+
+        $vendor = $interview->ask($input, $output, $namespaceQuestion);
+        $project->setVendor($vendor);
+
+        $defaultNamespace = $project->getNamespace() ?? ucfirst($project->getTitle()).'\\';
+        $namespaceQuestion = new Question(
+            "<question>Namespace of your project?</question> <info>{$project->getNamespace()}</info>".PHP_EOL,
+            $defaultNamespace
+        );
+
+        $namespace = $interview->ask($input, $output, $namespaceQuestion);
+        $project->setNamespace($namespace);
 
         try {
-            file_put_contents(APP_CWD.'/.t3cetool.yml', $content);
+            $this->configurationManager->write($project);
+
+            $output->writeln(
+                '<info>Wrote the configuration to disk. You can now generate the skeleton using the "generate" command</info>'
+            );
         } catch (\Exception $e) {
             $output->writeln('<error>Could not write config file.</error>');
         }
