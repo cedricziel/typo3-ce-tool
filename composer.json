@@ -14,6 +14,11 @@
       "CedricZiel\\T3CETool\\": "src/"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "CedricZiel\\T3CETool\\Test\\": "test/"
+    }
+  },
   "authors": [
     {
       "name": "Cedric Ziel",
