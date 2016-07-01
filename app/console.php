@@ -2,24 +2,20 @@
 
 include __DIR__.'/../vendor/autoload.php';
 
-define('APP_NAME', 'TYPO3 CE Tool');
 define('APP_ROOT', __DIR__);
-define('APP_VERSION', '0.0.1-dev');
 define('APP_CWD', getcwd());
 
-$container = new \Symfony\Component\DependencyInjection\ContainerBuilder();
-$dispatcher = new \Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher($container);
+/**
+ * Create a container, add some services
+ */
+$container = new Symfony\Component\DependencyInjection\ContainerBuilder();
+$extension = new CedricZiel\T3CETool\DependencyInjection\CeToolExtension();
 
+$container->registerExtension($extension);
+$container->loadFromExtension($extension->getAlias());
+$container->addCompilerPass(new CedricZiel\T3CETool\DependencyInjection\Compiler\ConsoleCommandPass());
 $container->compile();
 
-$application = new \CedricZiel\T3CETool\CeToolApplication(APP_NAME, APP_VERSION);
-$application->setDispatcher($dispatcher);
-$application->setContainer($container);
-
-$application->addCommands(
-    [
-        new  \CedricZiel\T3CETool\Command\InitCommand(),
-    ]
-);
-
-$application->run();
+$container
+    ->get('application')
+    ->run();

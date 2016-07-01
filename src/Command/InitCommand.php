@@ -2,6 +2,7 @@
 
 namespace CedricZiel\T3CETool\Command;
 
+use CedricZiel\T3CETool\Initialization\InitializationServiceInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
@@ -17,6 +18,22 @@ use Symfony\Component\Yaml\Yaml;
  */
 class InitCommand extends Command
 {
+    /**
+     * @var InitializationServiceInterface
+     */
+    protected $initializationService;
+
+    /**
+     * @param InitializationServiceInterface $initializationService
+     * @param string                         $name
+     */
+    public function __construct(InitializationServiceInterface $initializationService, $name = null)
+    {
+        parent::__construct($name);
+
+        $this->initializationService = $initializationService;
+    }
+
     /**
      * {@inheritdoc}
      */

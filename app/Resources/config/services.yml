@@ -1,0 +1,29 @@
+parameters:
+    app.name: TYPO3 CE Tool
+    app.version: 1.0.0-dev
+services:
+    service_container:
+        synthetic: true
+    event_dispatcher:
+        class: Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher
+        arguments: ['@service_container']
+    application:
+        class: CedricZiel\T3CETool\CeToolApplication
+        arguments: ['%app.name%', '%app.version%']
+        calls:
+            - ['setDispatcher', ['@event_dispatcher']]
+            - ['setContainer', ['@service_container']]
+
+    app.initialization.initialization_service:
+        class: CedricZiel\T3CETool\Initialization\InitializationService
+
+    # Commands
+    app.command.init:
+        class: CedricZiel\T3CETool\Command\InitCommand
+        arguments: ['@app.initialization.initialization_service']
+        tags:
+            - { name: 'console.command' }
+    app.command.element.add:
+        class: CedricZiel\T3CETool\Command\Element\AddCommand
+        tags:
+            - { name: 'console.command' }
