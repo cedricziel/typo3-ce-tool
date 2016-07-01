@@ -1,0 +1,14 @@
+<?php
+
+{# @formatter:off #}
+call_user_func(
+    function ($extensionName) {
+        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile(
+            $extensionName,
+            'Configuration/TypoScript',
+            '{{ project.title }}'
+        );
+    },
+    '{{ project.extensionKey }}'
+);
+{# @formatter:on #}

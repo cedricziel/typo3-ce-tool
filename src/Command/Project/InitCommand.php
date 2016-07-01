@@ -1,6 +1,6 @@
 <?php
 
-namespace CedricZiel\T3CETool\Command;
+namespace CedricZiel\T3CETool\Command\Project;
 
 use CedricZiel\T3CETool\Configuration\ConfigurationManagerInterface;
 use CedricZiel\T3CETool\Domain\Project;
@@ -11,7 +11,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * Initializes a CE-Tool project
@@ -52,7 +51,8 @@ class InitCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('init')
+            ->setName('project:init')
+            ->setAliases(['init'])
             ->setDescription('Initializes a CE Tool project')
             ->setHelp(
                 <<<EOT

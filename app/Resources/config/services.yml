@@ -42,11 +42,16 @@ services:
 
     # Commands
     app.command.init:
-        class: CedricZiel\T3CETool\Command\InitCommand
+        class: CedricZiel\T3CETool\Command\Project\InitCommand
         arguments: ['@app.configuration.configuration_manager', '@app.initialization.initialization_service']
         tags:
             - { name: 'console.command' }
     app.command.element.add:
         class: CedricZiel\T3CETool\Command\Element\AddCommand
+        tags:
+            - { name: 'console.command' }
+    app.command.extension.generate:
+        class: CedricZiel\T3CETool\Command\Extension\GenerateCommand
+        arguments: ['@event_dispatcher', '@app.configuration.configuration_manager']
         tags:
             - { name: 'console.command' }
