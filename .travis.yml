@@ -6,3 +6,6 @@ php:
 cache:
   directories:
     - $HOME/.cache/composer/files
+install:
+  - composer selfupdate
+  - composer install
