@@ -59,7 +59,7 @@ class GenerateCommand extends Command
     {
         $project = $this->configurationManager->get();
 
-        $this->eventDispatcher->dispatch('generate:pre', new GeneratePrepareEvent($project));
+        $this->eventDispatcher->dispatch(GeneratePrepareEvent::EVENT_NAME, new GeneratePrepareEvent($project));
         $this->eventDispatcher->dispatch('generate');
         $this->eventDispatcher->dispatch('generate:post');
         $this->eventDispatcher->dispatch('generate:cleanup');

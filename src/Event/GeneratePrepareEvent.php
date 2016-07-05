@@ -10,6 +10,8 @@ use Symfony\Component\EventDispatcher\Event;
  */
 class GeneratePrepareEvent extends Event
 {
+    const EVENT_NAME = 't3ce:project:generate:pre';
+
     /**
      * @var Project
      */
