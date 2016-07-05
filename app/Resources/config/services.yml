@@ -14,6 +14,23 @@ services:
         arguments: ['@service_container']
     service_container:
         synthetic: true
+    filesystem:
+        class: Symfony\Component\Filesystem\Filesystem
+
+    # Flysystem
+    flysystem:
+        class: League\Flysystem\MountManager
+        arguments: [[]]
+    flysystem.fs.system:
+        class: League\Flysystem\Adapter\Local
+        arguments: ['@?']
+        tags:
+            - { name: 'flysystem.fs', alias: 'system' }
+    flysystem.fs.ext:
+        class: League\Flysystem\Adapter\Local
+        arguments: ['@?']
+        tags:
+            - { name: 'flysystem.fs', alias: 'ext' }
 
     # Serialization
     serializer:

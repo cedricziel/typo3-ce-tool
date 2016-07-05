@@ -2,14 +2,16 @@
   "name": "cedricziel/typo3-cegenerator",
   "description": "Generator and Maintenance tool for TYPO3 extensions and Content Elements",
   "require": {
-    "symfony/console": "^3.0",
-    "symfony/yaml": "^3.0",
-    "symfony/event-dispatcher": "^3.0",
-    "symfony/dependency-injection": "^3.0",
-    "symfony/config": "^3.0",
     "doctrine/common": "^2.6",
+    "league/flysystem": "^1.0",
+    "symfony/config": "^3.0",
+    "symfony/console": "^3.0",
+    "symfony/dependency-injection": "^3.0",
+    "symfony/event-dispatcher": "^3.0",
+    "symfony/filesystem": "^3.1",
+    "symfony/property-access": "^3.1",
     "symfony/serializer": "^3.1",
-    "symfony/property-access": "^3.1"
+    "symfony/yaml": "^3.0"
   },
   "license": "MIT",
   "autoload": {
@@ -30,5 +32,8 @@
   ],
   "require-dev": {
     "phpunit/phpunit": "^5.4"
+  },
+  "config": {
+    "sort-packages": true
   }
 }

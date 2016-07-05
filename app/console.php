@@ -12,9 +12,10 @@ $container = new Symfony\Component\DependencyInjection\ContainerBuilder();
 $extension = new CedricZiel\T3CETool\DependencyInjection\CeToolExtension();
 
 $container->registerExtension($extension);
-$container->loadFromExtension($extension->getAlias());
-$container->addCompilerPass(new CedricZiel\T3CETool\DependencyInjection\Compiler\ConsoleCommandPass());
-$container->compile();
+$container->loadFromExtension($extension->getAlias())
+    ->addCompilerPass(new CedricZiel\T3CETool\DependencyInjection\Compiler\ConsoleCommandPass())
+    ->addCompilerPass(new CedricZiel\T3CETool\DependencyInjection\Compiler\FlysystemConfigurationPass())
+    ->compile();
 
 $container
     ->get('application')
