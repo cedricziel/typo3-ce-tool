@@ -21,16 +21,20 @@ services:
     flysystem:
         class: League\Flysystem\MountManager
         arguments: [[]]
-    flysystem.fs.system:
-        class: League\Flysystem\Adapter\Local
-        arguments: ['@?']
-        tags:
-            - { name: 'flysystem.fs', alias: 'system' }
     flysystem.fs.ext:
         class: League\Flysystem\Adapter\Local
         arguments: ['@?']
         tags:
             - { name: 'flysystem.fs', alias: 'ext' }
+    flysystem.fs.system:
+        class: League\Flysystem\Adapter\Local
+        arguments: ['@?']
+        tags:
+            - { name: 'flysystem.fs', alias: 'system' }
+    flysystem.fs.tmp:
+        class: League\Flysystem\Memory\MemoryAdapter
+        tags:
+            - { name: 'flysystem.fs', alias: 'tmp' }
 
     # Serialization
     serializer:
