@@ -21,18 +21,33 @@ services:
     flysystem:
         class: League\Flysystem\MountManager
         arguments: [[]]
-    flysystem.fs.ext:
+    flysystem.adapter.ext:
         class: League\Flysystem\Adapter\Local
         arguments: ['@?']
+        tags:
+            - { name: 'flysystem.adapter', alias: 'ext' }
+    flysystem.adapter.system:
+        class: League\Flysystem\Adapter\Local
+        arguments: ['@?']
+        tags:
+            - { name: 'flysystem.adapter', alias: 'system' }
+    flysystem.adapter.tmp:
+        class: League\Flysystem\Memory\MemoryAdapter
+        tags:
+            - { name: 'flysystem.adapter', alias: 'tmp' }
+    flysystem.fs.ext:
+        class: League\Flysystem\Filesystem
+        arguments: ['@flysystem.adapter.ext']
         tags:
             - { name: 'flysystem.fs', alias: 'ext' }
     flysystem.fs.system:
-        class: League\Flysystem\Adapter\Local
-        arguments: ['@?']
+        class: League\Flysystem\Filesystem
+        arguments: ['@flysystem.adapter.system']
         tags:
             - { name: 'flysystem.fs', alias: 'system' }
     flysystem.fs.tmp:
-        class: League\Flysystem\Memory\MemoryAdapter
+        class: League\Flysystem\Filesystem
+        arguments: ['@flysystem.adapter.tmp']
         tags:
             - { name: 'flysystem.fs', alias: 'tmp' }
 
@@ -64,6 +79,15 @@ services:
     # Twig
     twig:
         class: Twig_Environment
+        arguments: ['@twig.loader']
+    twig.loader:
+        class: Twig_Loader_Chain
+        arguments: [['@twig.loader.flysystem']]
+    twig.loader.fs:
+        class: Twig_Loader_Filesystem
+    twig.loader.flysystem:
+        class: CedricZiel\TwigLoaderFlysystem\FlysystemLoader
+        arguments: ['@flysystem.fs.system', '@flysystem.fs.ext']
 
     # Commands
     app.command.init:

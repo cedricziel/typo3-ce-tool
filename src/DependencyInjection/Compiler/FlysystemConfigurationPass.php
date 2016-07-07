@@ -23,21 +23,25 @@ class FlysystemConfigurationPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         if (defined('APP_CWD')) {
-            $extFsDefinition = $container->getDefinition('flysystem.fs.ext');
+            $extFsDefinition = $container->getDefinition('flysystem.adapter.ext');
             $extFsDefinition->setArguments([APP_CWD]);
         }
 
-        $systemFsDefinition = $container->getDefinition('flysystem.fs.system');
+        $systemFsDefinition = $container->getDefinition('flysystem.adapter.system');
         $systemFsDefinition->setArguments([APP_ROOT]);
 
         $mountManagerDefinition = $container->getDefinition('flysystem');
+        // grab all tagged services with tag `flysystem.fs` and mount them on the mount manager
         foreach ($container->findTaggedServiceIds('flysystem.fs') as $serviceId => $tags) {
+            // a single filesystem can have multiple mount points in the mount manager
             foreach ($tags as $tag) {
-                $filesystem = new Definition();
-                $filesystem->setClass(Filesystem::class);
-                $filesystem->addArgument(new Reference($serviceId));
-
-                $mountManagerDefinition->addMethodCall('mountFilesystem', [$tag['alias'], $filesystem]);
+                $mountManagerDefinition->addMethodCall(
+                    'mountFilesystem',
+                    [
+                        $tag['alias'],
+                        new Reference($serviceId),
+                    ]
+                );
             }
         }
     }
