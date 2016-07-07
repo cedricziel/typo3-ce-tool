@@ -2,6 +2,7 @@
   "name": "cedricziel/typo3-cegenerator",
   "description": "Generator and Maintenance tool for TYPO3 extensions and Content Elements",
   "require": {
+    "cedricziel/twig-loader-flysystem": "^1.0",
     "doctrine/common": "^2.6",
     "league/flysystem": "^1.0",
     "league/flysystem-memory": "^1.0",

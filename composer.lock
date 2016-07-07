@@ -4,9 +4,65 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a596c38e2247369d46c09db29224da2d",
-    "content-hash": "2c5a0a241149416ab0a08867d21b06f9",
+    "hash": "8950bab2c41dfc7b9fb9658786425448",
+    "content-hash": "0a42e1530ead4ab7eb73309b74a8a7c2",
     "packages": [
+        {
+            "name": "cedricziel/twig-loader-flysystem",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cedricziel/twig-loader-flysystem.git",
+                "reference": "8eb3b19155a78746c91130ab523422dc3472ace6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cedricziel/twig-loader-flysystem/zipball/8eb3b19155a78746c91130ab523422dc3472ace6",
+                "reference": "8eb3b19155a78746c91130ab523422dc3472ace6",
+                "shasum": ""
+            },
+            "require": {
+                "league/flysystem": "^1.0",
+                "php": "~5.5|~7.0",
+                "twig/twig": "^1.24"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0||~5.0",
+                "scrutinizer/ocular": "~1.1",
+                "squizlabs/php_codesniffer": "~2.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "CedricZiel\\TwigLoaderFlysystem\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Cedric Ziel",
+                    "email": "cedric@cedric-ziel.com"
+                }
+            ],
+            "description": "Flysystem loader for the twig templating language",
+            "homepage": "https://github.com/cedricziel/twig-loader-flysystem",
+            "keywords": [
+                "Flysystem",
+                "filesystem",
+                "loader",
+                "templates",
+                "twig"
+            ],
+            "time": "2016-07-06 13:48:00"
+        },
         {
             "name": "doctrine/annotations",
             "version": "v1.2.7",
